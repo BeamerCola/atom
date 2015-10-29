@@ -1579,10 +1579,6 @@ class TextEditor extends Model
   getMarkerCount: ->
     @buffer.getMarkerCount()
 
-  # {Delegates to: DisplayBuffer.destroyMarker}
-  destroyMarker: (args...) ->
-    @displayBuffer.destroyMarker(args...)
-
   ###
   Section: Cursors
   ###
