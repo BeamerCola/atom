@@ -8,7 +8,7 @@ Model = require './model'
 Token = require './token'
 Decoration = require './decoration'
 LayerDecoration = require './layer-decoration'
-Marker = require './marker'
+TextEditorMarker = require './text-editor-marker'
 
 class BufferToScreenConversionError extends Error
   constructor: (@message, @metadata) ->
@@ -822,21 +822,21 @@ class DisplayBuffer extends Model
   decorationsForMarkerId: (markerId) ->
     @decorationsByMarkerId[markerId]
 
-  # Retrieves a {Marker} based on its id.
+  # Retrieves a {TextEditorMarker} based on its id.
   #
   # id - A {Number} representing a marker id
   #
-  # Returns the {Marker} (if it exists).
+  # Returns the {TextEditorMarker} (if it exists).
   getMarker: (id) ->
     unless marker = @markers[id]
       if bufferMarker = @buffer.getMarker(id)
-        marker = new Marker({bufferMarker, displayBuffer: this})
+        marker = new TextEditorMarker({bufferMarker, displayBuffer: this})
         @markers[id] = marker
     marker
 
   # Retrieves the active markers in the buffer.
   #
-  # Returns an {Array} of existing {Marker}s.
+  # Returns an {Array} of existing {TextEditorMarker}s.
   getMarkers: ->
     @buffer.getMarkers().map ({id}) => @getMarker(id)
 
@@ -846,7 +846,7 @@ class DisplayBuffer extends Model
   # Public: Constructs a new marker at the given screen range.
   #
   # range - The marker {Range} (representing the distance between the head and tail)
-  # options - Options to pass to the {Marker} constructor
+  # options - Options to pass to the {TextEditorMarker} constructor
   #
   # Returns a {Number} representing the new marker's ID.
   markScreenRange: (args...) ->
@@ -856,7 +856,7 @@ class DisplayBuffer extends Model
   # Public: Constructs a new marker at the given buffer range.
   #
   # range - The marker {Range} (representing the distance between the head and tail)
-  # options - Options to pass to the {Marker} constructor
+  # options - Options to pass to the {TextEditorMarker} constructor
   #
   # Returns a {Number} representing the new marker's ID.
   markBufferRange: (range, options) ->
@@ -865,7 +865,7 @@ class DisplayBuffer extends Model
   # Public: Constructs a new marker at the given screen position.
   #
   # range - The marker {Range} (representing the distance between the head and tail)
-  # options - Options to pass to the {Marker} constructor
+  # options - Options to pass to the {TextEditorMarker} constructor
   #
   # Returns a {Number} representing the new marker's ID.
   markScreenPosition: (screenPosition, options) ->
@@ -874,7 +874,7 @@ class DisplayBuffer extends Model
   # Public: Constructs a new marker at the given buffer position.
   #
   # range - The marker {Range} (representing the distance between the head and tail)
-  # options - Options to pass to the {Marker} constructor
+  # options - Options to pass to the {TextEditorMarker} constructor
   #
   # Returns a {Number} representing the new marker's ID.
   markBufferPosition: (bufferPosition, options) ->
@@ -891,7 +891,7 @@ class DisplayBuffer extends Model
   #
   # Refer to {DisplayBuffer::findMarkers} for details.
   #
-  # Returns a {Marker} or null
+  # Returns a {TextEditorMarker} or null
   findMarker: (params) ->
     @findMarkers(params)[0]
 
@@ -912,7 +912,7 @@ class DisplayBuffer extends Model
   #   :containedInBufferRange - A {Range} or range-compatible {Array}. Only
   #     returns markers contained within this range.
   #
-  # Returns an {Array} of {Marker}s
+  # Returns an {Array} of {TextEditorMarker}s
   findMarkers: (params) ->
     params = @translateToBufferMarkerParams(params)
     @buffer.findMarkers(params).map (stringMarker) => @getMarker(stringMarker.id)
