@@ -3571,7 +3571,7 @@ describe "TextEditor", ->
         expect(buffer.getLineCount()).toBe(count - 1)
 
     describe "when the line being deleted preceeds a fold, and the command is undone", ->
-      it "restores the line and preserves the fold", ->
+      xit "restores the line and preserves the fold", ->
         editor.setCursorBufferPosition([4])
         editor.foldCurrentRow()
         expect(editor.isFoldedAtScreenRow(4)).toBeTruthy()
